@@ -1,10 +1,27 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
-const JobPage = () => {
+function JobPage() {
   const { id } = useParams();
   const [job, setJob] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const response = await fetch(`/api/jobs/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch job");
+        }
+        const data = await response.json();
+        setJob(data);
+      } catch (error) {
+        console.error("Error fetching job:", error);
+      }
+    };
+
+    fetchJob();
+  }, [id]);
 
   const deleteJob = async () => {
     console.log(JobPage);
@@ -31,7 +48,6 @@ const JobPage = () => {
       <button onClick={deleteJob}>Delete Job</button>
     </div>
   );
-};
+}
 
 export default JobPage;
-

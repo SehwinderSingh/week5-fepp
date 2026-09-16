@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import JobsByTypePage from "./pages/JobsByTypePage";
 
 // pages & components
 import Home from "./pages/HomePage";
@@ -25,6 +26,7 @@ const App = () => {
               <Route path="/edit-job/:id" element={<EditJobPage />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/jobs-by-type" element={<JobsByTypePage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </div>

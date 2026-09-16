@@ -6,6 +6,19 @@ function JobPage() {
   const [job, setJob] = useState(null);
   const navigate = useNavigate();
 
+    const deleteJob = async (id) => {
+    try {
+      const res = await fetch(`/api/jobs/${id}`, {
+        mehtod: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete job");
+      }
+    } catch (error) {
+      console.error("Error fetching job:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchJob = async () => {
       try {
@@ -23,8 +36,11 @@ function JobPage() {
     fetchJob();
   }, [id]);
 
-  const deleteJob = async () => {
-    console.log(JobPage);
+  const onDeleteClick = (jobId) => {
+    const confirm = window.confirm("Are you sure you want to delete this");
+    if (!confirm) return;
+    deleteJob(jobId);
+    navigate("/");
   };
 
   if (!job) {
@@ -45,7 +61,7 @@ function JobPage() {
       <Link to={`/edit-job/${id}`}>
         <button>Edit Job</button>
       </Link>
-      <button onClick={deleteJob}>Delete Job</button>
+      <button onClick= {()=> onDeleteClick(job._id)}>Delete</button>
     </div>
   );
 }

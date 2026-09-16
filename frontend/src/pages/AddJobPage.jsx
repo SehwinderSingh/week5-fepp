@@ -6,7 +6,7 @@ const AddJobPage = () => {
   const [type, setType] = useState("Full-Time");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
-  const [salary, setSalary] = useState("");
+  const [salary, setSalary] = useState("4500");
   const [companyName, setCompanyName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
@@ -14,48 +14,42 @@ const AddJobPage = () => {
   const navigate = useNavigate();
 
   const addJob = async (newJob) => {
-  try {
-    const res = await fetch("/api/jobs", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newJob),
-    });
+    try {
+      const res = await fetch("/api/jobs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newJob),
+      });
 
-    if (!res.ok) {
-      throw new Error("Failed to add job");
+      if (!res.ok) {
+        throw new Error("Failed to add job");
+      }
+    } catch (error) {
+      console.error(error);
     }
-
-    return true;
-  } catch (error) {
-    console.error("Error adding job:", error);
-    return false;
-  }
-};
-
-const submitForm = async (e) => {
-  e.preventDefault();
-
-  const newJob = {
-    title,
-    type,
-    description,
-    company: {
-      name: companyName,
-      contactEmail,
-      contactPhone,
-    },
-    location,
-    salary: Number(salary),
   };
 
-  const success = await addJob(newJob);
+  const submitForm = (e) => {
+    e.preventDefault();
 
-  if (success) {
+    const newJob = {
+      title,
+      type,
+      description,
+      location,
+      salary,
+      company: {
+        name: companyName,
+        email: contactEmail,
+        phone: contactPhone,
+      },
+    };
+
+    addJob(newJob);
     navigate("/");
-  }
-};
+  };
 
   return (
     <div className="create">

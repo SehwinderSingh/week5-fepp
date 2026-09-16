@@ -1,8 +1,25 @@
 import JobListing from "../components/JobListing";
 import { useEffect, useState } from "react";
-
-const Home = () => {
+function HomePage() {
   const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch("/api/jobs");
+        if (!response.ok) {
+          throw new Error("Failed to fetch jobs");
+        }
+
+        const data = await response.json();
+        setJobs(data);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   return (
     <div className="home">
@@ -13,7 +30,6 @@ const Home = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Home;
-
+export default HomePage;
